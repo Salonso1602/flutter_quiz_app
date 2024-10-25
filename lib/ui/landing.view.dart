@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LandingView extends StatelessWidget {
   const LandingView({super.key, required this.onStartPress});
@@ -21,8 +22,12 @@ class LandingView extends StatelessWidget {
             height: 30,
           ),
           Text("Learn flutter the FUN way",
-              style: theme.textTheme.headlineSmall?.merge(
-                  TextStyle(color: theme.buttonTheme.colorScheme?.onPrimary))),
+              style: GoogleFonts.lato(
+                color: theme.buttonTheme.colorScheme?.onPrimary,
+                fontSize: 24,
+                fontWeight: FontWeight.bold
+                ),
+              ),
           const SizedBox(
             height: 30,
           ),
