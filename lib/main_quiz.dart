@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/data/questions.dart';
 import 'package:quiz_app/ui/landing.view.dart';
 import 'package:quiz_app/ui/quiz.view.dart';
+import 'package:quiz_app/ui/results.view.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
@@ -14,14 +16,45 @@ class _QuizState extends State<Quiz> {
 
   @override
   void initState() {
-    activeScreen = LandingView(onStartPress: setActiveScreen);
+    activeScreen = LandingView(onStartPress: () {
+      setActiveScreen("quiz-screen");
+    });
     super.initState();
   }
 
-  void setActiveScreen() {
+  void setActiveScreen(String targetView) {
     setState(() {
-      activeScreen = const QuizView();
+      switch (targetView) {
+        case "quiz-screen":
+          activeScreen = QuizView(onSelectAnswer: selectAnswer);
+          break;
+        case "landing-screen":
+          activeScreen = LandingView(onStartPress: () {
+            setActiveScreen("quiz-screen");
+          });
+          break;
+        case "result-screen":
+          activeScreen = ResultsView(
+            onRetryPress: () {
+              selectedAnswers.clear();
+              setActiveScreen("landing-screen");
+            },
+            selectedAnswers: selectedAnswers,
+          );
+          break;
+        default:
+      }
     });
+  }
+
+  List<String> selectedAnswers = [];
+
+  selectAnswer(String answer) {
+    selectedAnswers.add(answer);
+
+    if (selectedAnswers.length == questions.length) {
+      setActiveScreen("result-screen");
+    }
   }
 
   final theme = ThemeData(
